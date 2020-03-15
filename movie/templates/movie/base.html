@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Ankit Maurya{% endblock %}</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'movie/images/home512.png' %}" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Satisfy'>
+    <link rel="stylesheet" type="text/css" href="{% static 'movie/style.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="{% static 'movie/js/main.js' %}"></script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" style="font-size: 20px" >
+    <div class="container-field">
+        <!-- Header -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+
+            </button>
+            <a class="navbar-brand " href="{% url 'movie:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Ankit Maurya </a>
+        </div>
+
+        <!-- Items -->
+        <div class="collapse navbar-collapse" id="topNavBar">
+            <ul class="nav navbar-nav">
+
+                <li class="{% block movie_active %}{% endblock %}">
+                    <a href="{% url 'movie:index' %}">
+                        <span class="glyphicon glyphicon-film" aria-hidden="true"></span>&nbsp; Movie
+                    </a>
+                </li>
+
+                <li class="{% block songs_active %}{% endblock %}">
+                    <a href="{% url 'movie:song-list' 'all' %}">
+                        <span class="glyphicon glyphicon-music" aria-hidden="true"></span>&nbsp; Songs
+                    </a>
+                </li>
+                <li class="{% block video_active %}{% endblock %}">
+                    <a href="{% url 'movie:video' %}">
+                        <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>&nbsp; Video
+                    </a>
+                </li>
+
+
+            </ul>
+
+            <form class="navbar-form navbar-left" role="search" method="get" action="#">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" value="" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">
+                     <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </form>
+
+            <ul class="nav navbar-nav navbar-right ml-auto">
+                {% block addvideo %}
+                <li class="{% block addmovie_active %}{% endblock %}">
+                    <a href="{% url 'movie:movie-add' %}">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Movie
+                    </a>
+                </li>
+                {% endblock %}
+
+
+
+                    {% csrf_token %}
+                {% if user.is_authenticated %} <!-- if user logged in then -->
+                    <li class="{% block profile_active %}{% endblock %}">
+                        <a  href = "{% url 'movie:profile' user.id %}" >
+                             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            Hello, {{user.username}}
+                        </a>
+
+                    </li>
+                {% else %}
+                 <li class="{% block login_active %}{% endblock %}">
+                    <a href="{% url 'movie:login' %}">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; Login
+                    </a>
+                </li>
+                <li class="{% block signup_active %}{% endblock %}">
+                    <a href="{% url 'movie:signup' %}">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Signup
+                    </a>
+                </li>
+
+                {% endif %}
+
+
+            <li class="{% block logout_active %}{% endblock %}">
+                    <a href="{% url 'movie:logout' %}">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+
+    </div>
+</nav>
+
+
+{% block body %}
+{% endblock %}
+</body>
+</html>

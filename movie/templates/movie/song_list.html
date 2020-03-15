@@ -1,0 +1,89 @@
+{% extends 'movie/base.html' %}
+{% block title %}Song List{% endblock %}
+{% block songs_active %}active{% endblock %}
+
+
+{% block body %}
+{% if all_songs %}
+    <div class="container-fluid songs-container">
+          <div class="row">
+        <div class="col-sm-12">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" {% if filter_by == 'all' %}class="active"{% endif %}><a href="{% url 'movie:song-list' 'all' %}">View All</a></li>
+                <li role="presentation" {% if filter_by == 'favorites' %}class="active"{% endif %}><a href="{% url 'movie:song-list' 'favorites' %}">Favorites</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+            <!-- Right Song Info -->
+            <div class="col-sm-8 col-md-9">
+
+
+                <div class="panel panel-default">
+                    <div class="panel-body">
+
+                        <h3>All Songs</h3>
+
+                        {% if error_message %}
+                            <p><strong>{{ error_message }}</strong></p>
+                        {% endif %}
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Audio File</th>
+                                <th>Favorite</th>
+                                <th>Actions</th>
+                                <th>Movie Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for song in all_songs %}
+                                <tr>
+                                    <td>{{ song.song_name }}</td>
+                                    <td>
+                                        <a target="_blank" href="{{ song.song_audio.url }}">
+                                            <button type="button" class="btn btn-success btn-xs">
+                                                <span class="glyphicon glyphicon-play"></span>&nbsp; Play
+                                            </button>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'movie:favorite' song.id %}" class="btn-favorite"><span class=" glyphicon glyphicon-star{% if song.is_favorite %} active{% else %}glyphicon glyphicon-star-empty {% endif %}"></span></a>
+                                    </td>
+                                    <td>
+                                        <form action="{% url 'movie:song-delete' song.movie.id song.id %}" method="post" style="display: inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="song_id" value="{{ song.id }}" />
+                                            <button type="submit" class="btn btn-danger btn-xs">
+                                                <span class="glyphicon glyphicon-remove"></span>&nbsp; Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>{{ song.movie.movie_name }}</td>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+{% else %}
+<h1>There is no song present. Please, add a song. </h1>
+{% endif %}
+{% endblock %}
+<!--
+<ul class="nav nav-pills" style="margin-bottom: 10px;">
+    <li role="presentation" class="active"><a href="{% url 'movie:detail' song.movie.id %}">View All</a></li>
+    <li role="presentation"><a href="{% url 'movie:song-add' song.movie.id%}">Add New Song</a></li>
+</ul>
+-->

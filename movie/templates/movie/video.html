@@ -1,0 +1,67 @@
+{% extends 'movie/base.html' %}
+{% block title %}Video{% endblock %}
+{% block video_active %}active{% endblock %}
+
+{% block addvideo %}
+    <li class="">
+        <a href="{% url 'movie:add_video' %}">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Video
+        </a>
+    </li>
+{% endblock %}
+
+{% block body %}
+<div class="albums-container container-fluid">
+
+    <!-- Albums -->
+    <div class="row">
+
+        {% if all_videos %}
+            {% for video in all_videos %}
+
+
+                <div class="col-sm-4 col-lg-2">
+                    <div class="thumbnail">
+                        <a href="{{video.video_song.url }}">
+                            <img src="{{ video.video_logo.url }}" class="img-responsive">
+                        </a>
+                        <div class="caption">
+                            <h2>{{ video.video_name }}</h2>
+                            <h4>{{video.genre}} &nbsp;({{ video.release_year }})</h4>
+
+                            <!-- for play video -->
+                            <a target="_blank" href="{{video.video_song.url }}" class="btn btn-primary btn-sm" role="button">
+                                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>&nbsp; Play Video
+                            </a>
+
+                            <!-- Delete Video-->
+                            <form action="{% url 'movie:delete_video' video.id  %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{ video.id }}" />
+                                <button type="submit" class="btn btn-default btn-sm">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        {% else %}
+            <div class="col-sm-12">
+                <br>
+                <a href="{% url 'movie:add_video' %}">
+                    <button type="button" class="btn btn-success">
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp; Add Video
+                    </button>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'movie/base.html' %}
+{% block title %}video page{% endblock %}
+{% block movie_active %} active {% endblock %}
+
+{% block body %}
+
+<h2>Video must be added with id:- {{video.id}}</h2>
+<h2>Title:- {{video.video_name}}</h2>
+<h2>Genre:- {{video.genre}}</h2>
+<h2>Release year:- {{video.release_year}}</h2>
+<h2>Video_logo:- <img src = "{{video.video_logo.url}}"></h2>
+
+{% endblock %}
