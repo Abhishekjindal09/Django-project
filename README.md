@@ -1,5 +1,6 @@
 # Django-project
-A Django developed website
+A Django developed website 
+Django- backend tool based on python
 
 # Run:-
 python manage.py runserver
